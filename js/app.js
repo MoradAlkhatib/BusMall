@@ -30,7 +30,7 @@ for (var i = 0; i < imgArr.length; i++) {
     let imageName = imgArr[i].split('.')[0];
     new Images(imageName, imgArr[i])
 }
-// console.log(Images.all)
+
 
 function renderImage(){
      leftIndex=getRandomNumber(0,imgArr.length-1);
@@ -64,10 +64,7 @@ function clickFunction(event){
         counter++;
 
     }
-    
-    console.log(event.target.id);
-    
-    
+       
 }
 
 imageSection.addEventListener('click',clickFunction);
@@ -83,10 +80,6 @@ viewResult.addEventListener('click', function dataView() {
     }
     imageSection.addEventListener('click', clickFunction);
   });
-
-
-
-
 
 function getRandomNumber(min, max){
     
