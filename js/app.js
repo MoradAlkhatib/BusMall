@@ -7,7 +7,7 @@ const rightImg = document.getElementById('rightimg');
 const viewResult = document.getElementById('viewResult');
 const list = document.getElementById('list');
 let round = 25;
-let counter = 0;
+let counter = 0;  
 let leftIndex;
 let midIndex;
 let rightIndex;
@@ -51,8 +51,7 @@ function renderImage(){
 
 }
 
-renderImage();
-
+ renderImage();
 function clickFunction(event){
     if((event.target.id === 'leftimg' || event.target.id === 'centerimg' || event.target.id === 'rightimg' )
       &counter<round){
@@ -85,4 +84,10 @@ function getRandomNumber(min, max){
     
     return Math.floor(Math.random() * (max - min + 1) + min); 
       
+
 }
+
+
+
+
+
