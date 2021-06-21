@@ -11,8 +11,7 @@ let counter = 0;
 let leftIndex;
 let midIndex;
 let rightIndex;
-let a;
-let c=[];
+
 
 let imgArr = ['bag.jpg', 'banana.jpg', 'bathroom.jpg','boots.jpg','breakfast.jpg','bubblegum.jpg',
 'chair.jpg','cthulhu.jpg','dog-duck.jpg','dragon.jpg','pen.jpg','pet-sweep.jpg','scissors.jpg',
@@ -42,27 +41,21 @@ function renderImage(){
         rightIndex=getRandomNumber(0,imgArr.length-1);
 
     }while(leftIndex === midIndex || leftIndex === rightIndex || midIndex === rightIndex );
-  
-   leftImg.src=Images.all[leftIndex].imgSrc;
-   midelImg.src=Images.all[midIndex].imgSrc;
-   rightImg.src=Images.all[rightIndex].imgSrc;
-   Images.all[leftIndex].view++;
-   Images.all[midIndex].view++;
-   Images.all[rightIndex].view++;
-   for(var i=0;i<imgArr;i++)
-    console.log(Images.all[i].click) ;
-    // console.log(a);
-    // for(let j=0;j<3;j++){
-    //   if(c[i]!==leftIndex &&c[i]!==midIndex &&c[i]!==rightIndex ){}
-    // }
-
-   c.push(leftIndex);
-   c.push(midIndex);
-   c.push(rightIndex);
+      
+          
+    leftImg.src=Images.all[leftIndex].imgSrc;
+    midelImg.src=Images.all[midIndex].imgSrc;
+    rightImg.src=Images.all[rightIndex].imgSrc;
+    Images.all[leftIndex].view++;
+    Images.all[midIndex].view++;
+    Images.all[rightIndex].view++;
+      
+    
+ 
    
 }
-
- renderImage();
+renderImage();
+ 
 function clickFunction(event){
     if((event.target.id === 'leftimg' || event.target.id === 'centerimg' || event.target.id === 'rightimg' )
       &counter<round){
@@ -74,7 +67,7 @@ function clickFunction(event){
         counter++;
 
     }
-    else{drawChart();}
+    if(counter==25){drawChart();}
        
 }
 
@@ -88,6 +81,7 @@ viewResult.addEventListener('click', function dataView() {
       list.appendChild(item);
       item.textContent = `${Images.all[i].name.split('.')[0]} had ${Images.all[i].click} votes, and was seen ${Images.all[i].view} times.`;
       imageSection.removeEventListener('click',clickFunction);
+      
     }
     imageSection.addEventListener('click', clickFunction);
   });
@@ -98,6 +92,8 @@ function getRandomNumber(min, max){
       
 
 }
+
+
 
 
 function drawChart(){
