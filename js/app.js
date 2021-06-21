@@ -11,7 +11,8 @@ let counter = 0;
 let leftIndex;
 let midIndex;
 let rightIndex;
-
+let a;
+let c=[];
 
 let imgArr = ['bag.jpg', 'banana.jpg', 'bathroom.jpg','boots.jpg','breakfast.jpg','bubblegum.jpg',
 'chair.jpg','cthulhu.jpg','dog-duck.jpg','dragon.jpg','pen.jpg','pet-sweep.jpg','scissors.jpg',
@@ -41,14 +42,24 @@ function renderImage(){
         rightIndex=getRandomNumber(0,imgArr.length-1);
 
     }while(leftIndex === midIndex || leftIndex === rightIndex || midIndex === rightIndex );
-
+  
    leftImg.src=Images.all[leftIndex].imgSrc;
    midelImg.src=Images.all[midIndex].imgSrc;
    rightImg.src=Images.all[rightIndex].imgSrc;
    Images.all[leftIndex].view++;
    Images.all[midIndex].view++;
    Images.all[rightIndex].view++;
+   for(var i=0;i<imgArr;i++)
+    console.log(Images.all[i].click) ;
+    // console.log(a);
+    // for(let j=0;j<3;j++){
+    //   if(c[i]!==leftIndex &&c[i]!==midIndex &&c[i]!==rightIndex ){}
+    // }
 
+   c.push(leftIndex);
+   c.push(midIndex);
+   c.push(rightIndex);
+   
 }
 
  renderImage();
@@ -63,6 +74,7 @@ function clickFunction(event){
         counter++;
 
     }
+    else{drawChart();}
        
 }
 
@@ -88,6 +100,57 @@ function getRandomNumber(min, max){
 }
 
 
+function drawChart(){
+   let arrName=[];
+   let arrViews=[];
+   let arrVotes=[];
+  for(let i =0;i<imgArr.length;i++)
+  {
+    arrName.push(Images.all[i].name.split('.')[0]);
+    arrViews.push(Images.all[i].view);
+    arrVotes.push(Images.all[i].click);
 
+  }
+
+  var ctx = document.getElementById('myChart').getContext('2d');
+  var myChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+          labels: arrName,
+          datasets: [{
+              label: '# of View',
+              data: arrViews,
+              backgroundColor: [
+                  'rgba(255, 99, 132, 0.2)',
+                  
+              ],
+              borderColor: [
+                  'rgba(255, 99, 132, 1)',
+                  
+              ],
+              borderWidth: 1
+          },{
+            label: '# of Votes',
+            data: arrViews,
+            backgroundColor: [                
+                'rgba(54, 162, 235, 0.2)'                
+            ],
+            borderColor: [               
+                'rgba(54, 162, 235, 1)'                
+            ],
+            borderWidth: 1
+        }]
+      },
+      options: {
+          scales: {
+              y: {
+                  beginAtZero: true
+              }
+          }
+      }
+  });
+  
+  
+}
 
 
