@@ -6,8 +6,10 @@ const midelImg = document.getElementById('centerimg');
 const rightImg = document.getElementById('rightimg');
 const viewResult = document.getElementById('viewResult');
 const list = document.getElementById('list');
+const formSubmit=document.getElementById('formSubmit');
 let round = 25;
-let counter = 0;  
+let counter = 0;
+let compareArr=[];  
 let leftIndex;
 let midIndex;
 let rightIndex;
@@ -17,12 +19,24 @@ let imgArr = ['bag.jpg', 'banana.jpg', 'bathroom.jpg','boots.jpg','breakfast.jpg
 'chair.jpg','cthulhu.jpg','dog-duck.jpg','dragon.jpg','pen.jpg','pet-sweep.jpg','scissors.jpg',
 'shark.jpg','sweep.png','tauntaun.jpg','unicorn.jpg','usb.gif','water-can.jpg','wine-glass.jpg'];
 
+function submitRound(event){
+    event.preventDefault();
+    round=document.getElementById('round').value;
+    
+}
+
+
+formSubmit.addEventListener('submit',submitRound);
+
+
 function Images(name, imgSrc) {
     this.name = name;
     this.imgSrc = `./images/${imgSrc}`;
     this.view = 0;
     this.click = 0;
     Images.all.push(this);
+    // let arrString=JSON.stringify('orders',Images.all);
+    // localStorage.setItem('orders',arrString);
 
 }
 Images.all = [];
@@ -33,16 +47,22 @@ for (var i = 0; i < imgArr.length; i++) {
 
 
 function renderImage(){
-     leftIndex=getRandomNumber(0,imgArr.length-1);
-    
-
+     
     do{
+        leftIndex=getRandomNumber(0,imgArr.length-1);
         midIndex=getRandomNumber(0,imgArr.length-1);
         rightIndex=getRandomNumber(0,imgArr.length-1);
+        
 
-    }while(leftIndex === midIndex || leftIndex === rightIndex || midIndex === rightIndex );
-      
-          
+    }while(leftIndex === midIndex || leftIndex === rightIndex || midIndex === rightIndex ||
+    compareArr.includes(leftIndex)||compareArr.includes(midIndex)||compareArr.includes(rightIndex));
+    
+    
+    compareArr=[];
+    compareArr.push(leftIndex);
+    compareArr.push(midIndex);
+    compareArr.push(rightIndex);
+    
     leftImg.src=Images.all[leftIndex].imgSrc;
     midelImg.src=Images.all[midIndex].imgSrc;
     rightImg.src=Images.all[rightIndex].imgSrc;
@@ -50,8 +70,8 @@ function renderImage(){
     Images.all[midIndex].view++;
     Images.all[rightIndex].view++;
       
+      
     
- 
    
 }
 renderImage();
@@ -67,24 +87,44 @@ function clickFunction(event){
         counter++;
 
     }
-    if(counter==25){drawChart();}
+    // if(counter==round){drawChart();}
        
 }
 
 imageSection.addEventListener('click',clickFunction);
 
-
-viewResult.addEventListener('click', function dataView() {
+function dataView() {
     document.getElementById('list').innerHTML='';
     for (let i = 0; i < imgArr.length; i++) {
       let item = document.createElement('li');
       list.appendChild(item);
-      item.textContent = `${Images.all[i].name.split('.')[0]} had ${Images.all[i].click} votes, and was seen ${Images.all[i].view} times.`;
+      item.textContent = `${Images.all[i].name} had ${Images.all[i].click} votes, and was seen ${Images.all[i].view} times.`;
       imageSection.removeEventListener('click',clickFunction);
+
       
     }
     imageSection.addEventListener('click', clickFunction);
-  });
+    
+  }
+
+viewResult.addEventListener('click',dataView);
+
+// function getDate(){
+  
+//     let data=localStorage.getItem('orders');
+//     let orderData=JSON.parse(data);
+//     if(orderData!==null){
+//         Images.all=orderData;
+       
+//     }
+    
+    
+    // console.log(data);
+
+
+// }
+// getDate();
+
 
 function getRandomNumber(min, max){
     
@@ -96,57 +136,57 @@ function getRandomNumber(min, max){
 
 
 
-function drawChart(){
-   let arrName=[];
-   let arrViews=[];
-   let arrVotes=[];
-  for(let i =0;i<imgArr.length;i++)
-  {
-    arrName.push(Images.all[i].name.split('.')[0]);
-    arrViews.push(Images.all[i].view);
-    arrVotes.push(Images.all[i].click);
+// function drawChart(){
+//    let arrName=[];
+//    let arrViews=[];
+//    let arrVotes=[];
+//   for(let i =0;i<imgArr.length;i++)
+//   {
+//     arrName.push(Images.all[i].name.split('.')[0]);
+//     arrViews.push(Images.all[i].view);
+//     arrVotes.push(Images.all[i].click);
 
-  }
+//   }
 
-  var ctx = document.getElementById('myChart').getContext('2d');
-  var myChart = new Chart(ctx, {
-      type: 'bar',
-      data: {
-          labels: arrName,
-          datasets: [{
-              label: '# of View',
-              data: arrViews,
-              backgroundColor: [
-                  'rgba(255, 99, 132, 0.2)',
+//   var ctx = document.getElementById('myChart').getContext('2d');
+//   var myChart = new Chart(ctx, {
+//       type: 'bar',
+//       data: {
+//           labels: arrName,
+//           datasets: [{
+//               label: '# of View',
+//               data: arrViews,
+//               backgroundColor: [
+//                   'rgba(255, 99, 132, 0.2)',
                   
-              ],
-              borderColor: [
-                  'rgba(255, 99, 132, 1)',
+//               ],
+//               borderColor: [
+//                   'rgba(255, 99, 132, 1)',
                   
-              ],
-              borderWidth: 1
-          },{
-            label: '# of Votes',
-            data: arrViews,
-            backgroundColor: [                
-                'rgba(54, 162, 235, 0.2)'                
-            ],
-            borderColor: [               
-                'rgba(54, 162, 235, 1)'                
-            ],
-            borderWidth: 1
-        }]
-      },
-      options: {
-          scales: {
-              y: {
-                  beginAtZero: true
-              }
-          }
-      }
-  });
+//               ],
+//               borderWidth: 1
+//           },{
+//             label: '# of Votes',
+//             data: arrViews,
+//             backgroundColor: [                
+//                 'rgba(54, 162, 235, 0.2)'                
+//             ],
+//             borderColor: [               
+//                 'rgba(54, 162, 235, 1)'                
+//             ],
+//             borderWidth: 1
+//         }]
+//       },
+//       options: {
+//           scales: {
+//               y: {
+//                   beginAtZero: true
+//               }
+//           }
+//       }
+//   });
   
   
-}
+// }
 
 
